@@ -1,0 +1,57 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">My Posts</h2>
+
+    {% if posts %}
+        <!-- SHOW POSTS IF THEY EXIST -->
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" 
+                         class="card-img-top"
+                         style="height: 180px; object-fit: cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ post.title }}</h5>
+
+                        <p class="card-text text-muted small">
+                            {{ post.created_at|date:"M d, Y" }}
+                        </p>
+
+                        <a href="{% url 'post-detail' post.id %}" class="btn btn-primary btn-sm me-2">View</a>
+                        <a href="{% url 'post-edit' post.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
+                        <a href="{% url 'post-delete' post.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- EMPTY STATE MESSAGE -->
+        <div class="text-center mt-5">
+            
+            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076509.png"
+                 style="width: 150px; opacity: 0.85;"
+                 class="mb-3">
+
+            <h4 class="fw-bold">No Posts Yet</h4>
+            <p class="text-muted">You haven't created any posts. Start your first one!</p>
+
+            <a href="{% url 'post-create' %}" class="btn btn-primary mt-3">
+                Create Your First Post
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

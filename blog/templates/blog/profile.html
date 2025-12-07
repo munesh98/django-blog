@@ -1,0 +1,51 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container d-flex justify-content-center mt-5">
+
+    <div class="card shadow-lg p-4" style="width: 450px;">
+
+        <!-- PROFILE IMAGE -->
+        <div class="text-center">
+                <img src="{{ profile.image.url }}"
+					 class="rounded-circle mb-3"
+					 style="width: 130px; height: 130px; object-fit: cover;">
+        </div>
+
+        <!-- USERNAME -->
+        <h3 class="text-center fw-bold">{{ user.username }}</h3>
+
+        <!-- EMAIL -->
+        <p class="text-center text-muted">{{ user.email }}</p>
+
+        <hr>
+
+        <!-- USER INFO -->
+        <div class="mb-3">
+            <p><strong>Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+            <p><strong>Total Posts:</strong> {{ total_posts }}</p>
+            <p><strong>Total Likes Received:</strong> {{ total_likes }}</p>
+        </div>
+
+        <hr>
+
+        <!-- BIO -->
+        <h5 class="fw-bold">About Me</h5>
+        {% if profile.bio %}
+            <p>{{ profile.bio }}</p>
+        {% else %}
+            <p class="text-muted">No bio added yet.</p>
+        {% endif %}
+
+        <!-- EDIT BUTTON -->
+        {% if request.user == user %}
+            <a href="{% url 'user-profile-edit' %}" class="btn btn-primary w-100 mt-3">
+                Edit Profile
+            </a>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

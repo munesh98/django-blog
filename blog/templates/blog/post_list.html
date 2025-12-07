@@ -1,0 +1,96 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+<!-- SEARCH BAR -->
+<form method="GET" class="d-flex mb-4">
+    <input 
+        type="text" 
+        name="q" 
+        class="form-control me-2"
+        style="max-width: 300px;"
+        placeholder="Search posts..." 
+        value="{{ request.GET.q }}"
+    >
+    <button class="btn btn-primary">Search</button>
+</form>
+
+
+<!-- POSTS GRID -->
+<div class="row">
+
+{% for each in page_obj %}
+
+<div class="col-md-4 mb-4">
+    <div class="card shadow-sm h-100">
+
+        {% if each.image %}
+        <img 
+            src="{{ each.image.url }}" 
+            class="card-img-top" 
+            style="height: 200px; object-fit: cover;"
+        >
+        {% endif %}
+
+        <div class="card-body">
+
+            <!-- TITLE -->
+            <h5 class="card-title fw-bold">
+                {{ each.title }}
+            </h5>
+
+            <!-- CATEGORY -->
+            {% if each.category %}
+            <span class="badge bg-primary mb-2">
+                {{ each.category.name }}
+            </span>
+            {% endif %}
+
+            <!-- CONTENT PREVIEW -->
+            <p class="card-text">
+                {{ each.content|truncatewords:20 }}
+            </p>
+
+            <!-- META INFO -->
+            <p class="text-muted small mb-1">
+                By {{ each.author.username }} • {{ each.created_at|date:"M d, Y" }}
+            </p>
+
+            <!-- BUTTONS -->
+            <div class="d-flex gap-2 mt-3">
+                <a href="{% url 'post-detail' each.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                <a href="{% url 'post-edit' each.id %}" class="btn btn-sm btn-outline-warning">Edit</a>
+                <a href="{% url 'post-delete' each.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<!-- PAGINATION -->
+<div class="d-flex justify-content-center mt-4">
+
+    {% if page_obj.has_previous %}
+    <a class="btn btn-outline-secondary me-2" href="?page={{ page_obj.previous_page_number }}">
+        Previous
+    </a>
+    {% endif %}
+
+    <span class="align-self-center mx-3 fw-semibold">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+    <a class="btn btn-outline-secondary ms-2" href="?page={{ page_obj.next_page_number }}">
+        Next
+    </a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

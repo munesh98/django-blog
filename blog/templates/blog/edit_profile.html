@@ -1,0 +1,117 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-header img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ccc;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"], input[type="email"], textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: white;
+    }
+
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+
+    .btn-update {
+        background: #007bff;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .btn-update:hover {
+        background: #0056b3;
+    }
+</style>
+
+<div class="profile-container">
+
+    <div class="profile-header">
+        <h2>Edit Profile</h2>
+
+        {% if request.user.profile.image %}
+            <img src="{{ request.user.profile.image.url }}" alt="Profile Image">
+        {% endif %}
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h3>User Info</h3>
+
+        <div class="form-group">
+            {{ user_form.first_name.label_tag }}
+            {{ user_form.first_name }}
+        </div>
+
+        <div class="form-group">
+            {{ user_form.last_name.label_tag }}
+            {{ user_form.last_name }}
+        </div>
+
+        <div class="form-group">
+            {{ user_form.email.label_tag }}
+            {{ user_form.email }}
+        </div>
+
+        <hr>
+
+        <h3>Profile Info</h3>
+
+        <div class="form-group">
+            {{ profile_form.image.label_tag }}
+            {{ profile_form.image }}
+        </div>
+
+        <div class="form-group">
+            {{ profile_form.bio.label_tag }}
+            {{ profile_form.bio }}
+        </div>
+
+        <button class="btn-update" type="submit">Update Profile</button>
+    </form>
+
+</div>
+
+{% endblock %}

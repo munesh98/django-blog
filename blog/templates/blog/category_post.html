@@ -1,0 +1,43 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+<h2>Posts under: {{ category_type.name }}</h2>
+
+{% if posts %}
+
+<div style="
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+">
+
+    {% for post in posts %}
+        <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+
+            <h3>
+                <a href="{% url 'post-detail' post.id %}">
+                    {{ post.title }}
+                </a>
+            </h3>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}" width="100%" style="border-radius: 5px;" alt="{{ post.title }}">
+            {% endif %}
+
+            {% if post.category_type %}
+                <p><strong>Category:</strong> {{ post.category_type.name }}</p>
+            {% endif %}
+
+            <p>{{ post.content|truncatewords:20 }}</p>
+
+        </div>
+    {% endfor %}
+
+</div>
+
+{% else %}
+    <p>No posts available in this category.</p>
+{% endif %}
+
+{% endblock %}
